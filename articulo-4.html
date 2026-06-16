@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El turno que nadie quiere — Jesús Adrián Flores García</title>
+<meta name="description" content="Cómo los agentes de IA se hacen cargo del papeleo, el contenido y los números de un negocio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1729; --ink-soft:#16203a; --ink-card:#1a2540;
+    --bone:#E8E6E0; --bone-dim:#9aa3b5;
+    --amber:#E0A458; --teal:#5B9A8B;
+    --line:rgba(232,230,224,0.12);
+    --display:'Spectral',Georgia,serif; --body:'Inter',system-ui,sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--bone);font-family:var(--body);line-height:1.7;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--amber);color:var(--ink)}
+  a{color:var(--teal);text-decoration:none;transition:color .2s}
+  a:hover{color:var(--amber)}
+  nav{position:fixed;top:0;left:0;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;
+    padding:16px 6vw;background:rgba(15,23,41,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  nav .brand{font-family:var(--mono);font-size:13px}
+  nav .brand b{color:var(--amber);font-weight:500}
+  nav .back{font-family:var(--mono);font-size:13px;color:var(--bone-dim)}
+  .wrap{max-width:760px;margin:0 auto;padding:130px 6vw 80px}
+  .kicker{font-family:var(--mono);font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:var(--amber);margin-bottom:20px}
+  h1{font-family:var(--display);font-weight:600;font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.08;letter-spacing:-0.015em;margin-bottom:18px}
+  .subtitle{font-family:var(--display);font-style:italic;font-size:clamp(1.15rem,2.2vw,1.5rem);color:var(--bone-dim);margin-bottom:28px;line-height:1.4}
+  .byline{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-bottom:28px;border-bottom:1px solid var(--line);margin-bottom:14px;font-size:14px;color:var(--bone-dim)}
+  .byline .name{color:var(--bone);font-weight:500}
+  .byline .dot{color:var(--line)}
+  .meta-tags{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:44px}
+  .chip{font-family:var(--mono);font-size:11px;padding:5px 11px;background:rgba(232,230,224,0.05);border-radius:5px;color:var(--bone-dim)}
+  .lede-p{font-size:1.2rem;line-height:1.6;color:var(--bone);margin-bottom:28px;font-family:var(--display)}
+  article p{margin-bottom:22px;font-size:1.06rem;color:#d4d7df}
+  article h2{font-family:var(--display);font-size:1.6rem;font-weight:500;margin:44px 0 18px;line-height:1.2;color:var(--bone)}
+  article em{color:var(--bone);font-style:italic}
+  article strong{color:var(--bone);font-weight:600}
+  .term{color:var(--amber);font-style:normal;border-bottom:1px dotted rgba(224,164,88,0.5);cursor:help}
+  .figure{margin:44px 0;padding:32px;background:var(--ink-soft);border:1px solid var(--line);border-radius:14px}
+  .figure svg{width:100%;height:auto;display:block}
+  .figure figcaption{font-family:var(--mono);font-size:12px;color:var(--bone-dim);text-align:center;margin-top:18px;line-height:1.5}
+  .d-label{font-family:'JetBrains Mono',monospace;font-size:13px;fill:var(--bone)}
+  .d-sub{font-family:'Inter',sans-serif;font-size:11px;fill:var(--bone-dim)}
+  .d-amber{fill:var(--amber)}
+  .pull{border-left:3px solid var(--amber);padding:6px 0 6px 26px;margin:36px 0;font-family:var(--display);font-style:italic;font-size:1.45rem;line-height:1.4;color:var(--bone)}
+  .block{margin:50px 0;padding:34px;border:1px solid var(--line);border-radius:14px;background:var(--ink-soft)}
+  .block h3{font-family:var(--mono);font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);margin-bottom:22px}
+  .gloss{display:grid;gap:16px}
+  .gloss dt{font-weight:600;color:var(--bone);font-size:1rem;margin-bottom:3px}
+  .gloss dd{color:var(--bone-dim);font-size:0.95rem;line-height:1.55}
+  .gloss .item{padding-bottom:16px;border-bottom:1px solid var(--line)}
+  .gloss .item:last-child{border:none;padding-bottom:0}
+  .gloss .en{font-family:var(--mono);font-size:12px;color:var(--teal)}
+  .res{display:grid;gap:14px}
+  .res a.card2{display:flex;gap:16px;align-items:flex-start;padding:18px;border:1px solid var(--line);border-radius:10px;background:var(--ink);transition:border-color .2s,transform .2s}
+  .res a.card2:hover{border-color:rgba(224,164,88,0.4);transform:translateX(4px)}
+  .res .ic{font-family:var(--mono);font-size:11px;color:var(--amber);border:1px solid rgba(224,164,88,0.4);border-radius:5px;padding:4px 8px;white-space:nowrap;margin-top:2px}
+  .res .rt{color:var(--bone);font-weight:500;font-size:0.98rem;margin-bottom:3px}
+  .res .rd{color:var(--bone-dim);font-size:0.86rem;line-height:1.45}
+  .refs{margin:50px 0 0}
+  .refs h3{font-family:var(--mono);font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:var(--amber);margin-bottom:20px}
+  .refs ol{list-style:none;counter-reset:r}
+  .refs li{counter-increment:r;padding:14px 0 14px 38px;border-bottom:1px solid var(--line);position:relative;font-size:0.92rem;color:var(--bone-dim);line-height:1.5}
+  .refs li:last-child{border:none}
+  .refs li::before{content:counter(r);position:absolute;left:0;top:14px;font-family:var(--mono);font-size:12px;color:var(--amber);border:1px solid var(--line);border-radius:50%;width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+  .nextprev{display:flex;justify-content:space-between;gap:16px;margin-top:50px;flex-wrap:wrap}
+  .nextprev a{flex:1;min-width:200px;padding:20px;border:1px solid var(--line);border-radius:10px;background:var(--ink-soft);transition:border-color .2s}
+  .nextprev a:hover{border-color:rgba(224,164,88,0.4)}
+  .nextprev .dir{font-family:var(--mono);font-size:11px;color:var(--bone-dim);margin-bottom:6px}
+  .nextprev .ttl{color:var(--bone);font-family:var(--display);font-size:1.05rem}
+  .nextprev .right{text-align:right}
+  footer{border-top:1px solid var(--line);padding:40px 6vw;text-align:center;max-width:760px;margin:60px auto 0}
+  footer .sig{font-family:var(--display);font-size:1.2rem;margin-bottom:8px}
+  footer .note{font-family:var(--mono);font-size:12px;color:var(--bone-dim)}
+  @media(max-width:600px){.res a.card2{flex-direction:column;gap:8px}.pull{font-size:1.2rem}.nextprev .right{text-align:left}}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<nav>
+  <span class="brand">Jesús Adrián Flores García · <b>cuaderno</b></span>
+  <a class="back" href="index.html">← volver</a>
+</nav>
+<div class="wrap">
+  <div class="kicker">Escritos · Agentes de IA</div>
+  <h1>El turno que nadie quiere</h1>
+  <p class="subtitle">Cómo los agentes de IA se hacen cargo del papeleo, el contenido y los números de un negocio</p>
+  <div class="byline">
+    <span class="name">Jesús Adrián Flores García</span>
+    <span class="dot">·</span><span>Hybridge · 2026</span>
+    <span class="dot">·</span><span>lectura ~6 min</span>
+  </div>
+  <div class="meta-tags">
+    <span class="chip">back-office</span><span class="chip">contabilidad</span><span class="chip">contenido</span><span class="chip">reportes</span><span class="chip">productividad</span>
+  </div>
+
+  <article>
+    <p class="lede-p">El domingo por la noche tiene un ritual silencioso en miles de negocios pequeños.</p>
+
+    <p>Cerrada la cortina, el dueño se sienta frente a una pila de tickets, un cuaderno y una taza de café que ya se enfrió. Toca cuadrar las cuentas de la semana, capturar gastos, recordar a qué proveedor le debe y, si queda energía, pensar qué publicar el lunes en redes. Es el turno que nadie quiere y que, sin embargo, alguien tiene que cubrir. Casi siempre, ese alguien es la persona más cansada del negocio.</p>
+
+    <p>En textos anteriores hablé de los agentes que atienden y venden, los que dan la cara. Pero el trabajo que de verdad agota a un micronegocio rara vez se ve: es el papeleo, los números y la presencia digital que hay que sostener semana tras semana. Aquí los agentes de IA hacen su labor más callada y, quizá, más liberadora. No conquistan clientes; rescatan horas.</p>
+
+    <p>Lo que en inglés se llama <span class="term" title="La trastienda del negocio: todo lo que lo sostiene pero que el cliente no ve.">back-office</span> es, simplemente, la trastienda: todo lo que mantiene al negocio en pie pero que el cliente nunca ve. Durante años, automatizar esa trastienda significaba programar reglas rígidas que se rompían al primer imprevisto. La diferencia ahora es que el agente no sigue un guion fijo: lee, interpreta y decide.</p>
+
+    <figure class="figure">
+      <svg viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Las tres tareas del back-office que un agente automatiza y las horas que devuelven">
+        <text x="300" y="28" text-anchor="middle" class="d-label">La trastienda automatizada</text>
+        <!-- three columns -->
+        <rect x="40" y="55" width="160" height="150" rx="10" fill="none" stroke="var(--bone-dim)" stroke-width="1.3"/>
+        <text x="120" y="85" text-anchor="middle" class="d-label">Números</text>
+        <text x="120" y="108" text-anchor="middle" class="d-sub">captura tickets</text>
+        <text x="120" y="126" text-anchor="middle" class="d-sub">clasifica gastos</text>
+        <text x="120" y="144" text-anchor="middle" class="d-sub">borra el reporte</text>
+        <text x="120" y="180" text-anchor="middle" class="d-amber" style="font-size:15px;font-family:'JetBrains Mono'">80%</text>
+        <text x="120" y="196" text-anchor="middle" class="d-sub">tareas rutinarias</text>
+
+        <rect x="220" y="55" width="160" height="150" rx="10" fill="none" stroke="var(--bone-dim)" stroke-width="1.3"/>
+        <text x="300" y="85" text-anchor="middle" class="d-label">Contenido</text>
+        <text x="300" y="108" text-anchor="middle" class="d-sub">borradores de post</text>
+        <text x="300" y="126" text-anchor="middle" class="d-sub">ideas y captions</text>
+        <text x="300" y="144" text-anchor="middle" class="d-sub">respuestas</text>
+        <text x="300" y="180" text-anchor="middle" class="d-amber" style="font-size:15px;font-family:'JetBrains Mono'">2.5 h</text>
+        <text x="300" y="196" text-anchor="middle" class="d-sub">ahorradas al día</text>
+
+        <rect x="400" y="55" width="160" height="150" rx="10" fill="none" stroke="var(--amber)" stroke-width="1.5"/>
+        <text x="480" y="85" text-anchor="middle" class="d-label">Reportes</text>
+        <text x="480" y="108" text-anchor="middle" class="d-sub">resume ventas</text>
+        <text x="480" y="126" text-anchor="middle" class="d-sub">explica la caída</text>
+        <text x="480" y="144" text-anchor="middle" class="d-sub">en lenguaje llano</text>
+        <text x="480" y="180" text-anchor="middle" class="d-amber" style="font-size:13px;font-family:'JetBrains Mono'">dato → frase</text>
+        <text x="480" y="196" text-anchor="middle" class="d-sub">decisión clara</text>
+
+        <text x="300" y="240" text-anchor="middle" class="d-sub" style="font-style:italic">El dueño deja de hacer el trabajo y pasa a revisarlo</text>
+      </svg>
+      <figcaption>Figura 1. Los tres frentes del back-office que un agente asume; en cada uno, el rol humano pasa de ejecutar a supervisar. Elaboración propia.</figcaption>
+    </figure>
+
+    <h2>Los números: del domingo de tickets a la revisión de cinco minutos</h2>
+    <p>La contabilidad es el ejemplo más claro, porque es la tarea que más se repite y la que menos perdona un error. El dato es contundente: para finales de 2025, más del <strong>80% de las tareas contables rutinarias</strong> ya se realizaban de forma parcial o totalmente automática. Un agente puede capturar gastos desde una foto del ticket, clasificar cada movimiento, detectar un cobro duplicado y preparar el borrador del reporte mensual, sin que nadie le dicte cada paso.</p>
+
+    <p>Traduzcamos ese 80% a un domingo por la noche. No quiere decir que el dueño deje de mirar sus cuentas; quiere decir que pasa de capturar tickets durante tres horas a revisar, en cinco minutos, un borrador que el agente ya armó. El trabajo no desaparece: cambia de naturaleza. De hacer la suma a verificar que la suma esté bien.</p>
+
+    <h2>El contenido: estar presente sin vivir pegado al teléfono</h2>
+    <p>Todo negocio sabe que debe publicar, responder comentarios y sostener una conversación en redes; pocos tienen el tiempo de hacerlo bien. Aquí la <span class="term" title="Producción asistida de texto e imágenes para redes y marketing.">generación de contenido</span> con IA mueve la aguja: quienes la usan ahorran en promedio <strong>2.5 horas al día</strong>, y cerca de tres horas por cada pieza. No es magia ni reemplazo del ingenio humano: es un borrador instantáneo que la persona pule.</p>
+
+    <div class="pull">El agente redacta rápido, sí, pero la voz propia sigue siendo una decisión humana. La herramienta acelera; el criterio distingue.</div>
+
+    <p>Conviene encender una luz de precaución temprano. Se estima que para 2026 cerca de la mitad del contenido que publican las empresas en redes será generado con IA. Cuando todos usan la misma herramienta para escribir lo mismo, el resultado es un mar de publicaciones idénticas. Lo que hace que un negocio suene a ese negocio, y no a otro, no se automatiza.</p>
+
+    <h2>Los reportes: convertir el dato en una frase que se entiende</h2>
+    <p>El tercer uso es el menos glamoroso y uno de los más valiosos. Un negocio genera datos todo el tiempo —ventas, inventario, gastos— pero los datos, así sueltos, no dicen nada. La diferencia entre una hoja de cálculo y una decisión es la interpretación.</p>
+
+    <p>Un agente de reportes no solo apila cifras: las explica. Publica un resumen que señala, en lenguaje llano, que las ventas cayeron 12% el martes y que el patrón coincide con un desabasto. Esa capacidad de <span class="term" title="Explicar por qué cambió un número, no solo mostrar que cambió.">explicar la variación</span>, no solo mostrarla, es lo que convierte un tablero en una herramienta de decisión. Para el dueño que no es contador ni analista —la inmensa mayoría—, esa traducción del número a la frase es la diferencia entre tener datos y entenderlos.</p>
+
+    <h2>Automatizar el desorden solo produce desorden más rápido</h2>
+    <p>Hay una tentación peligrosa: creer que el agente arregla lo que está mal. No lo hace. Un agente que captura gastos sobre una contabilidad caótica produce un caos ordenado y veloz, pero caos al fin. La automatización multiplica lo que ya existe: si los cimientos están bien, acelera; si están mal, acelera el error. La máquina hace el trabajo pesado, pero la responsabilidad de mirar el resultado con ojo crítico no se delega. Nunca.</p>
+
+    <p>Volvamos al domingo por la noche, a la pila de tickets y al café frío. Lo que parecía una condena semanal empieza a transformarse: no en su desaparición, sino en su reducción a lo esencial. El dueño ya no captura, revisa. Ya no redacta desde cero, edita. Ya no descifra una hoja de cálculo, lee una frase clara. Las nuevas tecnologías digitales no le quitaron el negocio de las manos; le devolvieron las horas que el negocio le quitaba.</p>
+  </article>
+
+  <div class="block">
+    <h3>Glosario rápido</h3>
+    <dl class="gloss">
+      <div class="item"><dt>Back-office</dt><dd>La trastienda del negocio: contabilidad, reportes, administración. Todo lo que lo sostiene pero que el cliente no ve.</dd></div>
+      <div class="item"><dt>Conciliación <span class="en">reconciliation</span></dt><dd>Cruzar los movimientos del banco con los registros del negocio para confirmar que todo cuadra. Tarea repetitiva ideal para un agente.</dd></div>
+      <div class="item"><dt>Generación de contenido <span class="en">content generation</span></dt><dd>Producción asistida de textos, ideas e imágenes para redes y marketing, a partir de una instrucción breve.</dd></div>
+      <div class="item"><dt>Resumen ejecutivo <span class="en">executive summary</span></dt><dd>Síntesis en lenguaje llano de lo que dicen los datos, pensada para decidir rápido sin leer toda la hoja de cálculo.</dd></div>
+      <div class="item"><dt>Explicar la variación <span class="en">variance analysis</span></dt><dd>No solo mostrar que un número cambió, sino decir por qué: a qué causa probable responde la subida o la caída.</dd></div>
+    </dl>
+  </div>
+
+  <div class="block">
+    <h3>Para profundizar</h3>
+    <div class="res">
+      <a class="card2" href="https://www.youtube.com/results?search_query=AI+bookkeeping+automation+small+business+demo" target="_blank" rel="noopener">
+        <span class="ic">VIDEO</span>
+        <span><span class="rt">Contabilidad automatizada con IA, en acción</span><span class="rd">Demostraciones de captura de tickets, clasificación de gastos y reportes generados por un agente.</span></span>
+      </a>
+      <a class="card2" href="https://quickbooks.intuit.com/r/running-a-business/agentic-ai-for-business/" target="_blank" rel="noopener">
+        <span class="ic">GUÍA</span>
+        <span><span class="rt">How small businesses are applying AI agents in 2025 — Intuit QuickBooks</span><span class="rd">Panorama de usos reales en finanzas y operaciones de pequeños negocios, con datos de adopción.</span></span>
+      </a>
+      <a class="card2" href="https://straitsresearch.com/statistic/use-cases-of-ai-among-content-marketers-globally" target="_blank" rel="noopener">
+        <span class="ic">DATOS</span>
+        <span><span class="rt">Casos de uso de IA en marketing de contenidos (2025)</span><span class="rd">Cifras sobre cuántas horas ahorra la generación de contenido y en qué tareas se concentra.</span></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="refs">
+    <h3>Referencias</h3>
+    <ol>
+      <li>1-800Accountant. (2025, 6 de noviembre). <em>How Small Businesses Are Using Agentic AI in 2026</em>. <a href="https://1800accountant.com/blog/how-to-use-agentic-ai-for-small-businesses" target="_blank" rel="noopener">Enlace</a></li>
+      <li>Intuit QuickBooks. (2026, 11 de marzo). <em>How small businesses are applying AI agents in 2025</em>. <a href="https://quickbooks.intuit.com/r/running-a-business/agentic-ai-for-business/" target="_blank" rel="noopener">Enlace</a></li>
+      <li>Straits Research. (2025, 24 de julio). <em>Leading use cases of AI among content marketers globally in 2025</em>. <a href="https://straitsresearch.com/statistic/use-cases-of-ai-among-content-marketers-globally" target="_blank" rel="noopener">Enlace</a></li>
+    </ol>
+  </div>
+
+  <div class="nextprev">
+    <a href="articulo-3.html">
+      <div class="dir">← anterior</div>
+      <div class="ttl">El vendedor invisible</div>
+    </a>
+  </div>
+</div>
+<footer>
+  <div class="sig">Jesús Adrián Flores García</div>
+  <div class="note">Cuaderno de trabajo · <a href="index.html">volver al inicio</a></div>
+</footer>
+</body>
+</html>
