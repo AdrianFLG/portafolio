@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J. Adrián Flores García — Cuaderno de trabajo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0F1729;
+    --ink-2:#161F33;
+    --bone:#E8E6E0;
+    --bone-dim:#A8A8A0;
+    --amber:#E0A458;
+    --teal:#5B9A8B;
+    --line:rgba(232,230,224,0.12);
+    --serif:'Spectral',Georgia,serif;
+    --sans:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink);color:var(--bone);
+    font-family:var(--sans);line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--amber);color:var(--ink)}
+  a{color:var(--teal);text-decoration:none;transition:color .2s}
+  a:hover{color:var(--amber)}
+
+  /* NAV */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px clamp(20px,5vw,64px);
+    background:rgba(15,23,41,.78);backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  nav .mark{font-family:var(--mono);font-size:13px;letter-spacing:.04em;color:var(--bone)}
+  nav .mark b{color:var(--amber)}
+  nav ul{display:flex;gap:28px;list-style:none}
+  nav ul a{font-size:13px;color:var(--bone-dim);letter-spacing:.02em}
+  nav ul a:hover{color:var(--bone)}
+  .nav-toggle{display:none;background:none;border:none;color:var(--bone);font-size:22px;cursor:pointer}
+  @media(max-width:680px){
+    nav ul{display:none}
+    nav ul.open{display:flex;position:absolute;top:100%;right:0;left:0;flex-direction:column;gap:0;background:var(--ink-2);border-bottom:1px solid var(--line)}
+    nav ul.open li{padding:14px 24px;border-top:1px solid var(--line)}
+    .nav-toggle{display:block}
+  }
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 clamp(20px,5vw,64px)}
+
+  /* HERO */
+  header.hero{
+    min-height:100vh;display:flex;align-items:center;
+    padding-top:80px;position:relative;overflow:hidden;
+  }
+  .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;width:100%}
+  @media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:32px}}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:22px}
+  .hero h1{font-family:var(--serif);font-weight:700;font-size:clamp(2.4rem,6vw,4.2rem);line-height:1.04;letter-spacing:-.02em;margin-bottom:20px}
+  .hero h1 em{font-style:italic;color:var(--amber)}
+  .hero .lede{font-size:clamp(1rem,2vw,1.18rem);color:var(--bone-dim);max-width:46ch;margin-bottom:30px}
+  .hero .cta-row{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{font-family:var(--mono);font-size:13px;letter-spacing:.03em;padding:12px 20px;border:1px solid var(--line);border-radius:2px;color:var(--bone);transition:all .2s}
+  .btn:hover{border-color:var(--amber);color:var(--amber)}
+  .btn.solid{background:var(--amber);color:var(--ink);border-color:var(--amber)}
+  .btn.solid:hover{background:transparent;color:var(--amber)}
+
+  /* RELIABILITY DIAGRAM (signature) */
+  .diagram-card{
+    background:var(--ink-2);border:1px solid var(--line);border-radius:6px;
+    padding:22px 22px 16px;
+  }
+  .diagram-card .dc-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+  .diagram-card .dc-head .t{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone-dim)}
+  .diagram-card .dc-head .v{font-family:var(--mono);font-size:11px;color:var(--amber)}
+  .diagram-card svg{width:100%;height:auto;display:block}
+  .dc-foot{font-family:var(--mono);font-size:10.5px;color:var(--bone-dim);margin-top:8px;line-height:1.5}
+
+  /* SECTIONS */
+  section{padding:clamp(64px,10vw,110px) 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px}
+  .sec-num{font-family:var(--mono);font-size:13px;color:var(--amber)}
+  .sec-head h2{font-family:var(--serif);font-weight:600;font-size:clamp(1.6rem,3.5vw,2.4rem);letter-spacing:-.01em}
+  .sec-intro{color:var(--bone-dim);max-width:60ch;margin-bottom:40px;font-size:1.02rem}
+
+  /* PROFILE */
+  .profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+  @media(max-width:760px){.profile-grid{grid-template-columns:1fr;gap:28px}}
+  .profile p{margin-bottom:16px;color:var(--bone)}
+  .facts{list-style:none;border-left:2px solid var(--amber);padding-left:20px}
+  .facts li{margin-bottom:18px}
+  .facts .k{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone-dim);display:block;margin-bottom:3px}
+  .facts .val{font-size:1.02rem}
+
+  /* RESEARCH HIGHLIGHT */
+  .paper{background:var(--ink-2);border:1px solid var(--line);border-radius:6px;padding:clamp(24px,4vw,40px)}
+  .paper .tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--teal);border:1px solid var(--line);padding:4px 10px;border-radius:2px;margin-bottom:18px}
+  .paper h3{font-family:var(--serif);font-size:clamp(1.3rem,2.6vw,1.7rem);font-weight:600;line-height:1.2;margin-bottom:14px}
+  .paper .authors{font-size:.92rem;color:var(--bone-dim);margin-bottom:20px;font-style:italic}
+  .paper p.abs{color:var(--bone);margin-bottom:24px;font-size:.98rem}
+  .metrics{display:flex;gap:28px;flex-wrap:wrap;padding-top:22px;border-top:1px solid var(--line)}
+  .metric .n{font-family:var(--mono);font-size:1.7rem;color:var(--amber);display:block;line-height:1}
+  .metric .l{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--bone-dim);margin-top:6px}
+
+  /* EXTENSION TABLE */
+  .ext-title{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--bone-dim);margin:48px 0 18px}
+  .ext{display:grid;gap:10px}
+  .ext-row{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;background:var(--ink-2);border:1px solid var(--line);border-radius:4px;padding:16px 20px;transition:border-color .2s}
+  .ext-row:hover{border-color:var(--teal)}
+  .ext-row .dot{width:9px;height:9px;border-radius:50%}
+  .ext-row .name{font-weight:600;font-size:.98rem}
+  .ext-row .desc{font-size:.86rem;color:var(--bone-dim);grid-column:2;margin-top:2px}
+  .ext-row .lvl{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--bone-dim);text-align:right}
+  @media(max-width:640px){.ext-row{grid-template-columns:auto 1fr}.ext-row .lvl{display:none}}
+
+  /* WRITING SERIES */
+  .series-meta{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+  .progress-track{flex:1;height:6px;background:var(--ink-2);border-radius:3px;overflow:hidden;max-width:220px}
+  .progress-fill{height:100%;background:var(--amber);width:12.5%}
+  .progress-label{font-family:var(--mono);font-size:12px;color:var(--amber)}
+  .articles{display:grid;gap:2px}
+  .art{display:grid;grid-template-columns:46px 1fr auto;gap:18px;align-items:center;padding:18px 4px;border-bottom:1px solid var(--line);transition:padding-left .2s}
+  .art:hover{padding-left:12px}
+  .art .idx{font-family:var(--mono);font-size:13px;color:var(--amber)}
+  .art .at{font-family:var(--serif);font-size:1.08rem}
+  .art .ad{font-size:.85rem;color:var(--bone-dim);grid-column:2;margin-top:2px}
+  .art .status{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:4px 9px;border-radius:2px;border:1px solid var(--line);color:var(--bone-dim)}
+  .art .status.done{color:var(--teal);border-color:var(--teal)}
+  @media(max-width:640px){.art{grid-template-columns:32px 1fr}.art .status{display:none}}
+
+  /* PROJECTS */
+  .proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+  .proj{background:var(--ink-2);border:1px solid var(--line);border-radius:6px;padding:26px;transition:transform .2s,border-color .2s}
+  .proj:hover{transform:translateY(-3px);border-color:var(--amber)}
+  .proj .pico{font-family:var(--mono);font-size:11px;color:var(--amber);margin-bottom:14px}
+  .proj h3{font-family:var(--serif);font-size:1.2rem;font-weight:600;margin-bottom:10px}
+  .proj p{font-size:.9rem;color:var(--bone-dim);margin-bottom:16px}
+  .stack{display:flex;flex-wrap:wrap;gap:6px}
+  .stack span{font-family:var(--mono);font-size:10px;color:var(--bone-dim);border:1px solid var(--line);padding:3px 8px;border-radius:2px}
+
+  /* FOOTER */
+  footer{padding:60px 0 50px;border-top:1px solid var(--line);text-align:center}
+  footer .sig{font-family:var(--serif);font-size:1.3rem;margin-bottom:10px}
+  footer .note{font-family:var(--mono);font-size:11px;color:var(--bone-dim);letter-spacing:.04em}
+
+  .reveal{opacity:0;transform:translateY(18px);transition:opacity .6s ease,transform .6s ease}
+  .reveal.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){
+    .reveal{opacity:1;transform:none;transition:none}
+    *{animation:none!important}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="mark">JAFG · <b>cuaderno</b></span>
+  <button class="nav-toggle" aria-label="Menú">☰</button>
+  <ul>
+    <li><a href="#perfil">Perfil</a></li>
+    <li><a href="#investigacion">Investigación</a></li>
+    <li><a href="#escritos">Escritos</a></li>
+    <li><a href="#proyectos">Proyectos</a></li>
+  </ul>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Ingeniería en Inteligencia Artificial</div>
+      <h1>Cuándo <em>confiar</em> en una máquina que decide.</h1>
+      <p class="lede">Cuaderno de trabajo de J. Adrián Flores García: investigación sobre calibración e incertidumbre en IA médica, escritura técnica sobre sistemas agénticos y proyectos de código.</p>
+      <div class="cta-row">
+        <a href="#investigacion" class="btn solid">Ver investigación</a>
+        <a href="#escritos" class="btn">Escritos</a>
+      </div>
+    </div>
+    <div class="diagram-card" id="diagramCard">
+      <div class="dc-head">
+        <span class="t">Reliability diagram — WDBC</span>
+        <span class="v">ECE = 0.0278</span>
+      </div>
+      <svg viewBox="0 0 300 220" id="relSvg" aria-label="Diagrama de calibración">
+        <!-- grid -->
+        <g stroke="rgba(232,230,224,0.08)" stroke-width="1">
+          <line x1="40" y1="20" x2="40" y2="180"/>
+          <line x1="40" y1="180" x2="280" y2="180"/>
+        </g>
+        <!-- perfect calibration line -->
+        <line x1="40" y1="180" x2="280" y2="20" stroke="rgba(91,154,139,0.5)" stroke-width="1.5" stroke-dasharray="4 4"/>
+        <!-- bars (drawn by JS) -->
+        <g id="bars"></g>
+        <!-- model curve (drawn by JS) -->
+        <polyline id="curve" fill="none" stroke="#E0A458" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points=""/>
+        <!-- axis labels -->
+        <text x="160" y="208" fill="#A8A8A0" font-family="JetBrains Mono" font-size="9" text-anchor="middle">confianza predicha</text>
+        <text x="14" y="100" fill="#A8A8A0" font-family="JetBrains Mono" font-size="9" text-anchor="middle" transform="rotate(-90 14 100)">accuracy real</text>
+      </svg>
+      <div class="dc-foot">La diagonal punteada marca la calibración perfecta. La curva ámbar traza el modelo Random Forest: los errores se concentran en la zona de confianza 65–85%.</div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section id="perfil">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Perfil</h2></div>
+    <p class="sec-intro">Estudiante de Ingeniería en Inteligencia Artificial bajo un modelo de educación 100% en línea, con interés en la frontera entre el rendimiento de un modelo y su confiabilidad.</p>
+    <div class="profile-grid">
+      <div class="profile">
+        <p>Estudio la Ingeniería en Inteligencia Artificial en Hybridge. Elegí cursarla en línea porque es el formato que mejor se acopla a quien quiere estudiar y trabajar a la vez, sin sacrificar uno por el otro.</p>
+        <p>Mi trabajo gira alrededor de una pregunta que me parece central conforme la IA toma más decisiones: no solo <em>si</em> un modelo acierta, sino <em>cuánto deberíamos confiar</em> en cada una de sus predicciones. Esa pregunta atraviesa tanto mi investigación en calibración como mi escritura sobre sistemas que actúan de forma autónoma.</p>
+        <p>Disfruto las conversaciones ocurrentes: ese ida y vuelta de ideas que empieza en un punto y termina, sin avisar, en uno más interesante. No es casualidad que haya terminado fascinado por las máquinas que conversan.</p>
+      </div>
+      <ul class="facts">
+        <li><span class="k">Carrera</span><span class="val">Ingeniería en Inteligencia Artificial</span></li>
+        <li><span class="k">Modalidad</span><span class="val">Educación 100% en línea — Hybridge</span></li>
+        <li><span class="k">Líneas de interés</span><span class="val">Calibración · Explicabilidad · Uncertainty quantification · Sistemas agénticos</span></li>
+        <li><span class="k">Herramientas</span><span class="val">Python · scikit-learn · LIME/SHAP · Random Forest</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="investigacion">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Investigación</h2></div>
+    <p class="sec-intro">Trabajo metodológico sobre calibración y explicabilidad local en clasificación de cáncer de mama, con líneas de extensión activas hacia la frontera actual del campo.</p>
+
+    <div class="paper">
+      <span class="tag">Paper · IA médica</span>
+      <h3>Beyond Accuracy: Calibration and Local Explainability in Medical AI for Breast Cancer Classification</h3>
+      <p class="authors">J. A. Flores García · M. de L. Martínez Villaseñor</p>
+      <p class="abs">En diagnóstico médico, una alta exactitud global no garantiza confiabilidad en cada predicción individual: un modelo puede acertar en la mayoría de los casos y a la vez sobreestimar su certeza justo donde la decisión clínica es más sensible. El trabajo aborda esa brecha sobre el Breast Cancer Wisconsin Dataset desde tres ángulos: el <em>Expected Calibration Error</em> para localizar dónde falla la calibración, el <em>Brier Score</em> como medida global caso por caso, y explicaciones locales con LIME. El modelo más preciso (96.5%) resulta más descalibrado que el de referencia, y los errores se concentran en la zona de confianza 65–85%.</p>
+      <div class="metrics">
+        <div class="metric"><span class="n">96.5%</span><span class="l">Accuracy RF</span></div>
+        <div class="metric"><span class="n">0.0269</span><span class="l">Brier Score</span></div>
+        <div class="metric"><span class="n">0.0278</span><span class="l">ECE</span></div>
+        <div class="metric"><span class="n">4 / 114</span><span class="l">Errores (zona 65–85%)</span></div>
+      </div>
+    </div>
+
+    <div class="ext-title">Líneas de extensión — estado del arte 2024–2026</div>
+    <div class="ext">
+      <div class="ext-row">
+        <span class="dot" style="background:var(--teal)"></span>
+        <div><div class="name">Validación robusta</div><div class="desc">Cross-validation / bootstrap para estabilizar el ECE en bins de baja cardinalidad.</div></div>
+        <span class="lvl">Bajo esfuerzo</span>
+      </div>
+      <div class="ext-row">
+        <span class="dot" style="background:var(--teal)"></span>
+        <div><div class="name">LIME vs. SHAP</div><div class="desc">Comparar fidelidad y estabilidad de explicaciones en la zona de sobreconfianza.</div></div>
+        <span class="lvl">Bajo esfuerzo</span>
+      </div>
+      <div class="ext-row">
+        <span class="dot" style="background:var(--amber)"></span>
+        <div><div class="name">Conformal Prediction</div><div class="desc">Conjuntos de predicción con cobertura garantizada — la frontera actual del campo.</div></div>
+        <span class="lvl">Novedad media</span>
+      </div>
+      <div class="ext-row">
+        <span class="dot" style="background:var(--amber)"></span>
+        <div><div class="name">CaliForest en WDBC</div><div class="desc">Método de calibración específico para Random Forest, aún no aplicado a este dataset.</div></div>
+        <span class="lvl">Hueco publicable</span>
+      </div>
+      <div class="ext-row">
+        <span class="dot" style="background:#C0626B"></span>
+        <div><div class="name">Datasets mayores (MIMIC)</div><div class="desc">Superar la limitación de n = 114 y la antigüedad del WDBC (1993).</div></div>
+        <span class="lvl">Mayor alcance</span>
+      </div>
+      <div class="ext-row">
+        <span class="dot" style="background:#C0626B"></span>
+        <div><div class="name">Sistemas multi-LLM / agénticos</div><div class="desc">Calibración de confianza cuando varios modelos deliberan en decisiones de alto impacto.</div></div>
+        <span class="lvl">Exploratoria</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="escritos">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Escritos</h2></div>
+    <p class="sec-intro">Serie editorial sobre agentes de IA aplicados a micronegocios, escrita con voz de revista técnica: del concepto a la implementación, de lo básico a lo técnico.</p>
+    <div class="series-meta">
+      <span class="progress-label">1 / 8</span>
+      <div class="progress-track"><div class="progress-fill"></div></div>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--bone-dim)">publicado</span>
+    </div>
+    <div class="articles">
+      <div class="art"><span class="idx">01</span><div><div class="at">El empleado que nunca duerme</div><div class="ad">Qué es un agente de IA y por qué le importa a tu micronegocio.</div></div><span class="status done">Listo</span></div>
+      <div class="art"><span class="idx">02</span><div><div class="at">Anatomía de un agente</div><div class="ad">Cerebro, memoria, planeación y herramientas. El patrón ReAct.</div></div><span class="status">En curso</span></div>
+      <div class="art"><span class="idx">03</span><div><div class="at">Superpoderes I: atención y ventas</div><div class="ad">Casos prácticos de automatización con cliente al centro.</div></div><span class="status">Planeado</span></div>
+      <div class="art"><span class="idx">04</span><div><div class="at">Superpoderes II: operaciones</div><div class="ad">Contenido, agendado y reportes automáticos.</div></div><span class="status">Planeado</span></div>
+      <div class="art"><span class="idx">05</span><div><div class="at">Elegir e implementar tu primer agente</div><div class="ad">Guía práctica: costos, no-code vs. código, primeros pasos.</div></div><span class="status">Planeado</span></div>
+      <div class="art"><span class="idx">06</span><div><div class="at">Bajo el capó</div><div class="ad">Arquitectura, frameworks y sistemas multiagente.</div></div><span class="status">Planeado</span></div>
+      <div class="art"><span class="idx">07</span><div><div class="at">Los retos reales</div><div class="ad">Calidad de datos, interpretabilidad y gobernanza.</div></div><span class="status">Planeado</span></div>
+      <div class="art"><span class="idx">08</span><div><div class="at">El futuro y cómo prepararte</div><div class="ad">Tendencias y habilidades para la ola agéntica.</div></div><span class="status">Planeado</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="proyectos">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Proyectos</h2></div>
+    <p class="sec-intro">Trabajo técnico y de código que sostiene la investigación y la escritura.</p>
+    <div class="proj-grid">
+      <div class="proj">
+        <div class="pico">// calibración</div>
+        <h3>Pipeline de calibración WDBC</h3>
+        <p>Entrenamiento de Random Forest, recalibración con Isotonic Regression y cálculo de ECE/Brier por bins, con explicaciones LIME sobre los casos de error.</p>
+        <div class="stack"><span>Python</span><span>scikit-learn</span><span>LIME</span><span>Colab</span></div>
+      </div>
+      <div class="proj">
+        <div class="pico">// en diseño</div>
+        <h3>Experimento Conformal Prediction</h3>
+        <p>Extensión planeada: aplicar predicción conformal al WDBC para emitir conjuntos de predicción con cobertura garantizada en la zona ambigua.</p>
+        <div class="stack"><span>Python</span><span>MAPIE</span><span>Uncertainty</span></div>
+      </div>
+      <div class="proj">
+        <div class="pico">// escritura</div>
+        <h3>Generación programática de artículos</h3>
+        <p>Scripts en Node que producen los artículos de la serie en formato Word, con validación automática de formato y palabras clave.</p>
+        <div class="stack"><span>Node.js</span><span>docx</span><span>python-docx</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="sig">J. Adrián Flores García</div>
+    <div class="note">Cuaderno de trabajo · actualizado mayo 2026</div>
+  </div>
+</footer>
+
+<script>
+  // Reliability diagram: map confidence bins to plotted points
+  // x: predicted confidence (0.5-1.0), y: real accuracy. SVG plot area x:40-280, y:180-20
+  const bins = [
+    {conf:0.58, acc:1.00, n:1},
+    {conf:0.65, acc:0.00, n:1},
+    {conf:0.74, acc:0.75, n:8},
+    {conf:0.84, acc:0.90, n:10},
+    {conf:0.98, acc:1.00, n:94}
+  ];
+  const X = c => 40 + ((c-0.5)/0.5)*240;
+  const Y = a => 180 - a*160;
+  // bars sized by bin weight
+  const barsG = document.getElementById('bars');
+  const maxN = 94;
+  bins.forEach(b=>{
+    const h = (b.n/maxN)*150;
+    const r = document.createElementNS('http://www.w3.org/2000/svg','rect');
+    r.setAttribute('x', X(b.conf)-7);
+    r.setAttribute('width', 14);
+    r.setAttribute('y', 180-h);
+    r.setAttribute('height', h);
+    r.setAttribute('fill','rgba(91,154,139,0.14)');
+    barsG.appendChild(r);
+  });
+  // animate curve
+  const curve = document.getElementById('curve');
+  const pts = bins.map(b=>`${X(b.conf).toFixed(1)},${Y(b.acc).toFixed(1)}`).join(' ');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){
+    curve.setAttribute('points', pts);
+  } else {
+    curve.setAttribute('points', pts);
+    const len = curve.getTotalLength ? curve.getTotalLength() : 600;
+    curve.style.strokeDasharray = len;
+    curve.style.strokeDashoffset = len;
+    curve.style.transition = 'stroke-dashoffset 1.8s ease .3s';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{curve.style.strokeDashoffset='0';}));
+  }
+  // dots at each bin point
+  const svg = document.getElementById('relSvg');
+  bins.forEach(b=>{
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx', X(b.conf)); c.setAttribute('cy', Y(b.acc));
+    c.setAttribute('r', 3.2); c.setAttribute('fill','#E0A458');
+    svg.appendChild(c);
+  });
+
+  // nav toggle
+  const tog = document.querySelector('.nav-toggle');
+  const ul = document.querySelector('nav ul');
+  tog.addEventListener('click', ()=>ul.classList.toggle('open'));
+  ul.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>ul.classList.remove('open')));
+
+  // scroll reveal
+  document.querySelectorAll('section .wrap > *').forEach(el=>el.classList.add('reveal'));
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
