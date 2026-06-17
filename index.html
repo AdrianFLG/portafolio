@@ -22,8 +22,8 @@
   ::selection{background:var(--amber);color:var(--ink)}
   a{color:inherit}
   nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;
-    padding:16px 6vw;background:rgba(11,17,32,0.7);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
-  nav.scrolled{border-bottom-color:var(--line);background:rgba(11,17,32,0.9)}
+    padding:16px 6vw;background:rgba(11,17,32,0.55);backdrop-filter:blur(14px);border-bottom:1px solid transparent;transition:border-color .3s,background .3s}
+  nav.scrolled{border-bottom-color:var(--line);background:rgba(11,17,32,0.92)}
   nav .brand{font-family:var(--mono);font-size:13px;letter-spacing:0.02em}
   nav .brand b{color:var(--amber);font-weight:500}
   nav ul{display:flex;gap:28px;list-style:none}
@@ -33,8 +33,11 @@
   nav a:hover::after{width:100%}
   .nav-toggle{display:none;background:none;border:none;color:var(--bone);font-size:22px;cursor:pointer}
   header{position:relative;min-height:100vh;display:flex;align-items:center;overflow:hidden}
-  #lattice{position:absolute;inset:0;width:100%;height:100%;z-index:1}
-  .hero-inner{position:relative;z-index:2;max-width:1400px;margin:0 auto;padding:120px 6vw 80px;width:100%;pointer-events:none}
+  #scene{position:absolute;inset:0;width:100%;height:100%;z-index:1}
+  .hero-grad{position:absolute;inset:0;z-index:2;pointer-events:none;
+    background:radial-gradient(ellipse 70% 60% at 70% 50%,transparent 0%,rgba(11,17,32,0.2) 55%,var(--ink) 100%),
+    linear-gradient(90deg,var(--ink) 0%,rgba(11,17,32,0.5) 35%,transparent 60%)}
+  .hero-inner{position:relative;z-index:3;max-width:1400px;margin:0 auto;padding:120px 6vw 80px;width:100%;pointer-events:none}
   .hero-inner *{pointer-events:auto}
   .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:var(--amber);margin-bottom:24px;opacity:0;animation:fadeUp .8s ease .1s forwards}
   h1{font-family:var(--display);font-weight:600;font-size:clamp(2.8rem,7vw,5.5rem);line-height:1.0;letter-spacing:-0.02em;max-width:14ch}
@@ -42,12 +45,13 @@
   h1 .l2{display:block;opacity:0;animation:fadeUp .8s ease .4s forwards}
   h1 .l3{display:block;opacity:0;animation:fadeUp .8s ease .55s forwards}
   h1 em{font-style:italic;color:var(--amber)}
-  .lede{margin-top:28px;font-size:clamp(1.05rem,1.5vw,1.25rem);color:var(--bone-dim);max-width:38em;opacity:0;animation:fadeUp .8s ease .7s forwards}
+  .lede{margin-top:28px;font-size:clamp(1.05rem,1.5vw,1.25rem);color:var(--bone-dim);max-width:34em;opacity:0;animation:fadeUp .8s ease .7s forwards}
   .hero-meta{margin-top:40px;display:flex;gap:40px;flex-wrap:wrap;opacity:0;animation:fadeUp .8s ease .85s forwards}
   .hero-meta .n{font-family:var(--mono);font-size:1.7rem;color:var(--bone);display:block;line-height:1}
   .hero-meta .l{font-size:12px;color:var(--bone-dim);letter-spacing:0.03em;margin-top:6px}
-  .scroll-hint{position:absolute;bottom:28px;left:6vw;z-index:2;font-family:var(--mono);font-size:11px;color:var(--bone-dim);display:flex;align-items:center;gap:10px;opacity:0;animation:fadeUp .8s ease 1.1s forwards}
+  .scroll-hint{position:absolute;bottom:28px;left:6vw;z-index:3;font-family:var(--mono);font-size:11px;color:var(--bone-dim);display:flex;align-items:center;gap:10px;opacity:0;animation:fadeUp .8s ease 1.1s forwards}
   .scroll-hint .dot{width:6px;height:6px;border-radius:50%;background:var(--amber);animation:pulse 1.8s ease-in-out infinite}
+  .drag-hint{position:absolute;bottom:28px;right:6vw;z-index:3;font-family:var(--mono);font-size:11px;color:var(--bone-dim);opacity:0;animation:fadeUp .8s ease 1.2s forwards}
   @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
   @keyframes pulse{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:1;transform:scale(1.4)}}
   section{max-width:1400px;margin:0 auto;padding:100px 6vw;position:relative;z-index:2;background:var(--ink)}
@@ -144,6 +148,8 @@
     .ext-row{grid-template-columns:1fr;gap:6px}
     .ext-row .lvl{text-align:left}.ext-row.head{display:none}
     .modal{padding:36px 26px}
+    .hero-grad{background:linear-gradient(180deg,rgba(11,17,32,0.3) 0%,rgba(11,17,32,0.6) 60%,var(--ink) 100%)}
+    .drag-hint{display:none}
   }
   @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
 </style>
@@ -160,7 +166,8 @@
   </ul>
 </nav>
 <header>
-  <canvas id="lattice"></canvas>
+  <div id="scene"></div>
+  <div class="hero-grad"></div>
   <div class="hero-inner">
     <div class="eyebrow">Ingeniería en Inteligencia Artificial · Hybridge</div>
     <h1><span class="l1">Sobre cuándo</span><span class="l2">una máquina</span><span class="l3">merece <em>confianza</em>.</span></h1>
@@ -171,7 +178,8 @@
       <div><span class="n">96.5%</span><span class="l">accuracy Random Forest</span></div>
     </div>
   </div>
-  <div class="scroll-hint"><span class="dot"></span> mueve el cursor · desliza para explorar</div>
+  <div class="scroll-hint"><span class="dot"></span> desliza para explorar</div>
+  <div class="drag-hint">arrastra para girar · las formas te siguen ↗</div>
 </header>
 <section id="perfil" class="divider">
   <div class="reveal">
@@ -285,52 +293,107 @@
     <div id="modalBody"></div>
   </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-const canvas=document.getElementById('lattice'), ctx=canvas.getContext('2d');
-let W,H,pts=[],mouse={x:-999,y:-999};
-function resize(){W=canvas.width=canvas.offsetWidth;H=canvas.height=canvas.offsetHeight;build();}
-function build(){
-  pts=[];const gap=Math.max(42,Math.min(64,W/26));
-  for(let x=gap*0.5;x<W;x+=gap)for(let y=gap*0.5;y<H;y+=gap){
-    pts.push({x,y,ox:x,oy:y,r:Math.random()*1.5+0.6,ph:Math.random()*6.28});
+/* ===== 3D HERO: floating wireframe polyhedra that react to mouse ===== */
+(function(){
+  if(typeof THREE==='undefined'){return;}
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  var host=document.getElementById('scene');
+  var scene=new THREE.Scene();
+  var camera=new THREE.PerspectiveCamera(60,host.offsetWidth/host.offsetHeight,0.1,1000);
+  camera.position.z=14;
+  var renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(host.offsetWidth,host.offsetHeight);
+  host.appendChild(renderer.domElement);
+
+  var AMBER=0xE0A458, TEAL=0x5B9A8B, BONE=0x929cb2;
+  var group=new THREE.Group(); scene.add(group);
+
+  // a constellation of wireframe shapes, biased to the right side
+  var defs=[
+    {geo:new THREE.IcosahedronGeometry(2.6,0), col:AMBER, pos:[4.5,0.6,0], spin:0.18},
+    {geo:new THREE.OctahedronGeometry(1.5,0), col:TEAL, pos:[7.2,2.6,-2], spin:0.3},
+    {geo:new THREE.TetrahedronGeometry(1.25,0), col:BONE, pos:[2.4,3.0,-1.5], spin:0.4},
+    {geo:new THREE.DodecahedronGeometry(1.15,0), col:AMBER, pos:[8.4,-1.8,-3], spin:0.22},
+    {geo:new THREE.IcosahedronGeometry(0.85,0), col:TEAL, pos:[3.4,-2.6,-1], spin:0.5},
+    {geo:new THREE.OctahedronGeometry(0.7,0), col:BONE, pos:[6.0,-3.0,-2], spin:0.45},
+    {geo:new THREE.TetrahedronGeometry(0.65,0), col:AMBER, pos:[5.5,4.0,-3], spin:0.5}
+  ];
+  var meshes=[];
+  defs.forEach(function(d){
+    var mat=new THREE.MeshBasicMaterial({color:d.col,wireframe:true,transparent:true,opacity:0.55});
+    var wire=new THREE.Mesh(d.geo,mat);
+    wire.position.set(d.pos[0],d.pos[1],d.pos[2]);
+    // subtle vertices as points
+    var pts=new THREE.Points(d.geo,new THREE.PointsMaterial({color:d.col,size:0.09,transparent:true,opacity:0.9}));
+    wire.add(pts);
+    wire.userData={spin:d.spin,base:d.pos.slice(),ph:Math.random()*6.28};
+    group.add(wire); meshes.push(wire);
+  });
+
+  // faint particle dust behind
+  var dustGeo=new THREE.BufferGeometry(), N=160, arr=[];
+  for(var i=0;i<N;i++){arr.push((Math.random()-0.3)*26,(Math.random()-0.5)*18,(Math.random()-0.5)*10-4);}
+  dustGeo.setAttribute('position',new THREE.Float32BufferAttribute(arr,3));
+  var dust=new THREE.Points(dustGeo,new THREE.PointsMaterial({color:BONE,size:0.05,transparent:true,opacity:0.4}));
+  scene.add(dust);
+
+  var tMouse={x:0,y:0}, mouse={x:0,y:0}, dragging=false, dragX=0, dragOffset=0, dragVel=0;
+  host.addEventListener('mousemove',function(e){
+    var r=host.getBoundingClientRect();
+    tMouse.x=((e.clientX-r.left)/r.width)*2-1;
+    tMouse.y=((e.clientY-r.top)/r.height)*2-1;
+  });
+  host.addEventListener('mousedown',function(e){dragging=true;dragX=e.clientX;host.style.cursor='grabbing';});
+  addEventListener('mouseup',function(){dragging=false;host.style.cursor='grab';});
+  addEventListener('mousemove',function(e){if(dragging){var dx=e.clientX-dragX;dragVel=dx*0.005;dragX=e.clientX;}});
+  host.style.cursor='grab';
+  // touch
+  host.addEventListener('touchmove',function(e){
+    var r=host.getBoundingClientRect(),to=e.touches[0];
+    tMouse.x=((to.clientX-r.left)/r.width)*2-1;
+    tMouse.y=((to.clientY-r.top)/r.height)*2-1;
+  },{passive:true});
+
+  var clock=new THREE.Clock();
+  function animate(){
+    requestAnimationFrame(animate);
+    var t=clock.getElapsedTime();
+    mouse.x+=(tMouse.x-mouse.x)*0.05;
+    mouse.y+=(tMouse.y-mouse.y)*0.05;
+    // drag inertia
+    dragOffset+=dragVel; dragVel*=0.93;
+    // whole group parallax follows cursor + drag
+    group.rotation.y+=( (mouse.x*0.5+dragOffset) - group.rotation.y)*0.06;
+    group.rotation.x+=( (mouse.y*0.3) - group.rotation.x)*0.06;
+    meshes.forEach(function(m,i){
+      m.rotation.x+=0.0025*m.userData.spin*60*0.016;
+      m.rotation.y+=0.003*m.userData.spin*60*0.016;
+      // gentle float
+      var b=m.userData.base, ph=m.userData.ph;
+      m.position.y=b[1]+Math.sin(t*0.6+ph)*0.4;
+      m.position.x=b[0]+Math.cos(t*0.4+ph)*0.25;
+    });
+    dust.rotation.y+=0.0004;
+    if(!reduce) renderer.render(scene,camera);
   }
-}
-let t=0;
-function draw(){
-  t+=0.012;
-  ctx.clearRect(0,0,W,H);
-  for(const p of pts){
-    const driftX=Math.cos(t+p.ph)*2, driftY=Math.sin(t*0.8+p.ph)*2;
-    const bx=p.ox+driftX, by=p.oy+driftY;
-    const dx=p.x-mouse.x,dy=p.y-mouse.y,d=Math.hypot(dx,dy),R=170;
-    if(d<R){const f=(1-d/R),a=Math.atan2(dy,dx);p.x=bx+Math.cos(a)*f*26;p.y=by+Math.sin(a)*f*26;}
-    else{p.x+=(bx-p.x)*0.06;p.y+=(by-p.y)*0.06;}
-    const near=d<R;
-    ctx.beginPath();ctx.arc(p.x,p.y,p.r+(near?(1-d/R)*1.8:0),0,7);
-    ctx.fillStyle=near?'rgba(224,164,88,'+(0.3+(1-d/R)*0.6)+')':'rgba(232,230,224,0.12)';
-    ctx.fill();
-  }
-  for(let i=0;i<pts.length;i++){
-    const p=pts[i];if(Math.hypot(p.x-mouse.x,p.y-mouse.y)>140)continue;
-    for(let j=i+1;j<pts.length;j++){
-      const q=pts[j],dd=Math.hypot(p.x-q.x,p.y-q.y);
-      if(dd<78){ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);
-        ctx.strokeStyle='rgba(224,164,88,'+(0.2*(1-dd/78))+')';ctx.lineWidth=1;ctx.stroke();}
-    }
-  }
-  requestAnimationFrame(draw);
-}
-addEventListener('resize',resize);
-addEventListener('mousemove',function(e){const r=canvas.getBoundingClientRect();mouse.x=e.clientX-r.left;mouse.y=e.clientY-r.top;});
-addEventListener('mouseleave',function(){mouse.x=-999;mouse.y=-999;});
-addEventListener('touchmove',function(e){const r=canvas.getBoundingClientRect(),to=e.touches[0];mouse.x=to.clientX-r.left;mouse.y=to.clientY-r.top;},{passive:true});
-resize();draw();
+  if(reduce){renderer.render(scene,camera);} else {animate();}
+
+  addEventListener('resize',function(){
+    camera.aspect=host.offsetWidth/host.offsetHeight; camera.updateProjectionMatrix();
+    renderer.setSize(host.offsetWidth,host.offsetHeight);
+  });
+})();
+
+/* ===== nav, reveal, modals ===== */
 addEventListener('scroll',function(){document.getElementById('nav').classList.toggle('scrolled',scrollY>40);});
-const io=new IntersectionObserver(function(entries){
+var io=new IntersectionObserver(function(entries){
   entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
 },{threshold:0.12});
 document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
-const DATA={
+var DATA={
   paper:{kicker:'Investigación · paper',title:'Beyond Accuracy: Calibration and Local Explainability in Medical AI for Breast Cancer Classification',sub:'Flores García, J. A. & Martínez Villaseñor, M. de L. · Universidad Panamericana',
     metrics:[['96.5%','Accuracy RF'],['0.0269','Brier Score'],['0.0278','ECE'],['n=114','test set']],
     body:'<p>El trabajo aborda una brecha incómoda de la IA médica: un modelo puede acertar en la mayoría de los casos y, al mismo tiempo, sobreestimar su certeza justo en los pacientes donde la decisión clínica es más sensible.</p><h4>Hallazgos</h4><ul><li>El modelo más exacto (Random Forest, 96.5%) está <b>peor calibrado</b> que la referencia (Logistic Regression, 95.6%).</li><li>Los 4 errores se concentran en la <b>zona de confianza 65-85%</b>; los casos con confianza superior al 90% se diagnosticaron sin error.</li><li>LIME revela que en los errores las variables <b>empujan en direcciones contradictorias</b> (3 hacia benigno, 2 hacia maligno), frente a la unanimidad de los aciertos.</li></ul><h4>Métodos</h4><p>Expected Calibration Error (ECE) por bins, Brier Score caso por caso, recalibración con Isotonic Regression y explicabilidad local con LIME, sobre el Breast Cancer Wisconsin Dataset.</p>',
@@ -346,8 +409,8 @@ const DATA={
     tags:['conformal','coverage','incertidumbre']},
 };
 function openModal(id){
-  const d=DATA[id];if(!d)return;
-  let html='<div class="kicker">'+d.kicker+'</div><h3>'+d.title+'</h3><div class="sub">'+(d.sub||'')+'</div>';
+  var d=DATA[id];if(!d)return;
+  var html='<div class="kicker">'+d.kicker+'</div><h3>'+d.title+'</h3><div class="sub">'+(d.sub||'')+'</div>';
   if(d.metrics){html+='<div class="mmetrics">'+d.metrics.map(function(m){return '<div class="mm"><div class="v">'+m[0]+'</div><div class="k">'+m[1]+'</div></div>';}).join('')+'</div>';}
   html+=d.body;
   if(d.tags){html+='<div class="tags">'+d.tags.map(function(tg){return '<span class="chip">'+tg+'</span>';}).join('')+'</div>';}
